@@ -277,8 +277,8 @@ export default function EditorPage() {
           language={language}
           path={filename}
           value={code}
-          onChange={(v: string) => {
-            const newText = v || '';
+          onChange={(v) => {
+            const newText = v ?? ''; 
             setCode(newText);
             if (selectedFile?.id) persist(selectedFile.id, newText);
           }}
