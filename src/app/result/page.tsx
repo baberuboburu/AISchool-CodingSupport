@@ -172,6 +172,18 @@ export default function ResultPage() {
     structured_output_1?: { files?: Array<{ name?: string; code?: string }> };
     summary?: string;
   };
+  // Difyの outputs 部分だけを型定義
+  // type DifyOutputs = {
+  //   structured_output?: {
+  //     result?: Array<{ name?: string; explanation?: string }>;
+  //   };
+  //   structured_output_1?: {
+  //     files?: Array<{ name?: string; code?: string }>;
+  //     summary?: string;
+  //   };
+  //   summary?: string;
+  // };
+
   type DifyResponse =
     | { data: { outputs?: DifyOutputs } }   // data.outputs に入るパターン
     | { outputs?: DifyOutputs };            // outputs 直下パターン
@@ -221,7 +233,8 @@ export default function ResultPage() {
 
   // 4) 生レスポンスから表示用値を派生（常に安全に辿る）
   const outputs: DifyOutputs | undefined =
-    (incoming as any)?.data?.outputs ?? (incoming as any)?.outputs;
+    (incoming && 'data' in incoming ? incoming.data.outputs : undefined)
+    ?? ('outputs' in (incoming ?? {}) ? (incoming as { outputs?: DifyOutputs }).outputs : undefined);
 
   const firstFile = outputs?.structured_output_1?.files?.[0];
   const code = firstFile?.code ?? '// 結果がありません';
