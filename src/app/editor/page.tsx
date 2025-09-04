@@ -226,13 +226,14 @@ export default function EditorPage() {
     () => ls.files.find(f => f.id === ls.selectedId) || null,
     [ls.files, ls.selectedId]
   );
+  const selectedId = selectedFile?.id ?? null;
   const filename = selectedFile?.name || 'untitled';
   const language = extToLang(selectedFile?.name);
 
   // 5) 表示用のコード（選択変更で切替）
   const [code, setCode] = useState<string>('');
   useEffect(() => {
-    const current = selectedFile ? codeMap[selectedFile.id] ?? '' : '';
+    const current = selectedId ? codeMap[selectedId] ?? '' : '';
     setCode(current);
   }, [selectedFile?.id, codeMap]);
 
