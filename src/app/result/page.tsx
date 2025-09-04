@@ -5,6 +5,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Editor, { OnMount } from '@monaco-editor/react';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
+
 type FileItem = { id: string; name: string };
 type LsShape = { files: FileItem[]; selectedId: string | null };
 
@@ -213,7 +216,7 @@ export default function ResultPage() {
 
   // 3) rid で受け取る（assistant.tsx → LS 保存 → /result?rid=... で遷移）
   const sp = useSearchParams();
-  const rid = sp.get('rid');
+  const rid = sp.get('rid') || '';
   const [incoming, setIncoming] = useState<DifyResponse | null>(null);
 
   useEffect(() => {
